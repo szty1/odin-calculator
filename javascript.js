@@ -1,5 +1,5 @@
-window['valueA'] = "";
-window['valueB'] = "";
+window['valueA'] = "0";
+window['valueB'] = "0";
 let operation;
 let currentValue = "valueA";
 
@@ -26,6 +26,23 @@ function calculate (operator, a, b) {
     }
 }
 
+function toggleNegative() {
+    if (window[currentValue] > 0) {
+        window[currentValue] = `-${window[currentValue]}`;
+    } else if (window[currentValue] < 0) {
+        window[currentValue] = window[currentValue].substring(1);
+    }
+    updateDisplay(window[currentValue]);
+}
+
+function handleClear() {
+    valueA = "0";
+    valueB = "0";
+    operation = undefined;
+    currentValue = "valueA";
+    updateDisplay(window[currentValue]);
+}
+
 function updateDisplay(text) {
     if (text.length > 12) return;
     display.innerText = text;
@@ -39,7 +56,8 @@ function operateButtonClicked() {
 }
 
 function numButtonClicked() {
-    if (valueA.length < 11) {
+    if (window[currentValue] === "0") window[currentValue] = "";
+    if (window[currentValue].length < 11) {
         window[currentValue] += this.dataset.key;
         updateDisplay(window[currentValue]);
     }
@@ -47,7 +65,14 @@ function numButtonClicked() {
 }
 
 function specialButtonClicked() {
-
+    switch (this.dataset.key) {
+        case 'plusminus':
+            toggleNegative();
+            break;
+        case 'clear':
+            handleClear();
+            break;
+    }
 }
 
 const display = document.querySelector('.displaytext');

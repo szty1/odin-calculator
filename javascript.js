@@ -43,6 +43,15 @@ function handleClear() {
     updateDisplay(window[currentValue]);
 }
 
+function handleBackspace() {
+    if (window[currentValue].length > 1) {
+        window[currentValue] = window[currentValue].slice(0, -1);
+    } else {
+        window[currentValue] = "0";
+    }
+    updateDisplay(window[currentValue]);
+}
+
 function updateDisplay(text) {
     if (text.length > 12) return;
     display.innerText = text;
@@ -72,6 +81,9 @@ function specialButtonClicked() {
         case 'clear':
             handleClear();
             break;
+        case 'bckspc':
+            handleBackspace();
+            break;
     }
 }
 
@@ -84,5 +96,5 @@ numButtons.forEach(key => key.addEventListener('click', numButtonClicked));
 const specialButtons = Array.from(document.querySelectorAll('.key.special'));
 specialButtons.forEach(key => key.addEventListener('click', specialButtonClicked));
 
-console.log(window[currentValue]);
+
 // console.log(window);

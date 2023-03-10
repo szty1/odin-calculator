@@ -47,11 +47,19 @@ body {
     align-items: center;
     background-color:rgba(228, 228, 228, 0.5);
     border-radius: 16px;
+    border-style: solid;
     width: 90px;
     height: 90px;
     font-size: 44px;
     color: rgb(224, 224, 224);
-    box-shadow: none;
+}
+
+button.active.focus, button.active:focus,
+button.focus, button:active.focus, 
+button:active:focus, button:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: white;
 }
 
 .key.double {
@@ -64,8 +72,11 @@ body {
 
 .key.operate {
     background-color:rgb(255, 145, 0);
+    border-color: rgb(255, 162, 41);
 }
 
 .key.special {
-    color: rgb(34, 34, 34);
+    background-color:rgb(167, 167, 167);
+    border-color: rgb(139, 139, 139);
+    color:rgb(59, 59, 59)
 }

@@ -4,5 +4,68 @@
 }
 
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Overpass Mono', monospace;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color:rgb(77, 77, 77);
+    border-radius: 20px;
+    width: 410px;
+    height: 624px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.display {
+    display: flex;
+    justify-content: right;
+    background-color:rgb(24, 24, 24);
+    border-radius: 16px;
+    padding: 10px 15px 0 15px;
+}
+
+.displaytext {
+    font-size: 50px;
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.keys {
+    margin: 36px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.key {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:rgba(228, 228, 228, 0.5);
+    border-radius: 16px;
+    width: 90px;
+    height: 90px;
+    font-size: 44px;
+    color: rgb(224, 224, 224);
+    box-shadow: none;
+}
+
+.key.double {
+    width: 196px;
+}
+
+.key.num {
+    background-color:rgb(97, 97, 97);
+}
+
+.key.operate {
+    background-color:rgb(255, 145, 0);
+}
+
+.key.special {
+    color: rgb(34, 34, 34);
 }

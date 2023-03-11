@@ -42,13 +42,16 @@ function handleBackspace() {
 }
 
 function updateDisplay(text) {
-    if (text.length > 12) return;
+    if (typeof(text) === "number") text = text.toString();
     if (text < 0) {
         text = text.substring(1);
         negative.innerText = "-";
     }
     else {
         negative.innerText = "";
+    }
+    if (text.length > 12 && text.includes(".")) {
+        text = text.substring(0, 11);
     }
     display.innerText = text;
 }
@@ -57,6 +60,8 @@ function calculate() {
     storedValue = window[operation](storedValue, inputValue);
     updateDisplay(storedValue);
     inputValue = "0";
+    operation = undefined;
+    operateButtons.forEach(key => key.classList.remove('selected'));
 }
 
 function operateButtonClicked() {
@@ -67,6 +72,8 @@ function operateButtonClicked() {
         inputValue = "0";
     }
     operation = this.dataset.key;
+    operateButtons.forEach(key => key.classList.remove('selected'));
+    this.classList.add('selected');
 }
 
 function calculateButtonClicked() {

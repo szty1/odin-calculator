@@ -86,3 +86,7 @@ button:active:focus, button:focus {
     border-color: rgb(139, 139, 139);
     color:rgb(59, 59, 59)
 }
+
+.key.selected {
+    background-color:rgb(255, 186, 96);
+}

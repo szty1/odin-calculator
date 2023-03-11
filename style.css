@@ -34,6 +34,11 @@ body {
     color: rgba(255, 255, 255, 0.76);
 }
 
+.displaynegative {
+    font-size: 50px;
+    color: rgba(255, 255, 255, 0.76);
+}
+
 .keys {
     margin: 36px 0;
     display: flex;

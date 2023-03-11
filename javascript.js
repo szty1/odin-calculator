@@ -27,11 +27,7 @@ function calculate (operator, a, b) {
 }
 
 function toggleNegative() {
-    if (window[currentValue] > 0) {
-        window[currentValue] = `-${window[currentValue]}`;
-    } else if (window[currentValue] < 0) {
-        window[currentValue] = window[currentValue].substring(1);
-    }
+    window[currentValue] = (window[currentValue] * -1).toString();
     updateDisplay(window[currentValue]);
 }
 
@@ -44,7 +40,8 @@ function handleClear() {
 }
 
 function handleBackspace() {
-    if (window[currentValue].length > 1) {
+    let firstdigit = (window[currentValue] < 0) ? 2 : 1
+    if (window[currentValue].length > firstdigit) {
         window[currentValue] = window[currentValue].slice(0, -1);
     } else {
         window[currentValue] = "0";
@@ -54,6 +51,13 @@ function handleBackspace() {
 
 function updateDisplay(text) {
     if (text.length > 12) return;
+    if (text < 0) {
+        text = text.substring(1);
+        negative.innerText = "-";
+    }
+    else {
+        negative.innerText = "";
+    }
     display.innerText = text;
 }
 
@@ -65,8 +69,9 @@ function operateButtonClicked() {
 }
 
 function numButtonClicked() {
+    let maxlength = (window[currentValue] < 0) ? 12 : 11;
     if (window[currentValue] === "0") window[currentValue] = "";
-    if (window[currentValue].length < 11) {
+    if (window[currentValue].length < maxlength) {
         window[currentValue] += this.dataset.key;
         updateDisplay(window[currentValue]);
     }
@@ -88,6 +93,7 @@ function specialButtonClicked() {
 }
 
 const display = document.querySelector('.displaytext');
+const negative = document.querySelector('.displaynegative');
 
 const operateButtons = Array.from(document.querySelectorAll('.key.operate'));
 operateButtons.forEach(key => key.addEventListener('click', operateButtonClicked));

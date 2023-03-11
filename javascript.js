@@ -1,52 +1,44 @@
-window['valueA'] = "0";
-window['valueB'] = "0";
+let inputValue = "0";
+let storedValue;
 let operation;
-let currentValue = "valueA";
 
 function add(a ,b) {
-    return a + b;
+    return Number(a) + Number(b);
 }
 
 function subtract(a, b) {
-    return a - b;
+    return Number(a) - Number(b);
 }
 
 function multiply(a, b) {
-    return a * b;
+    return Number(a) * Number(b);
 }
 
 function divide(a, b) {
     if (b == 0) return "ERROR!";
-    return a / b;
-}
-
-function calculate (operator, a, b) {
-    if (a !== undefined || b !== undefined) {
-        return window[operator](a, b);
-    }
+    return Number(a) / Number(b);
 }
 
 function toggleNegative() {
-    window[currentValue] = (window[currentValue] * -1).toString();
-    updateDisplay(window[currentValue]);
+    inputValue = (inputValue * -1).toString();
+    updateDisplay(inputValue);
 }
 
 function handleClear() {
-    valueA = "0";
-    valueB = "0";
+    inputValue = "0";
+    storedValue= undefined;
     operation = undefined;
-    currentValue = "valueA";
-    updateDisplay(window[currentValue]);
+    updateDisplay(inputValue);
 }
 
 function handleBackspace() {
-    let firstdigit = (window[currentValue] < 0) ? 2 : 1
-    if (window[currentValue].length > firstdigit) {
-        window[currentValue] = window[currentValue].slice(0, -1);
+    let firstdigit = (inputValue < 0) ? 2 : 1
+    if (inputValue.length > firstdigit) {
+        inputValue = inputValue.slice(0, -1);
     } else {
-        window[currentValue] = "0";
+        inputValue = "0";
     }
-    updateDisplay(window[currentValue]);
+    updateDisplay(inputValue);
 }
 
 function updateDisplay(text) {
@@ -61,19 +53,35 @@ function updateDisplay(text) {
     display.innerText = text;
 }
 
+function calculate() {
+    storedValue = window[operation](storedValue, inputValue);
+    updateDisplay(storedValue);
+    inputValue = "0";
+}
+
 function operateButtonClicked() {
-    if (this.dataset.key === "calculate") {
-
+    if (inputValue && storedValue) {
+        calculate();
+    } else {
+        storedValue = inputValue;
+        inputValue = "0";
     }
+    operation = this.dataset.key;
+}
 
+function calculateButtonClicked() {
+    if (inputValue && storedValue) {
+        calculate();
+        storedValue = undefined;
+    }
 }
 
 function numButtonClicked() {
-    let maxlength = (window[currentValue] < 0) ? 12 : 11;
-    if (window[currentValue] === "0") window[currentValue] = "";
-    if (window[currentValue].length < maxlength) {
-        window[currentValue] += this.dataset.key;
-        updateDisplay(window[currentValue]);
+    let maxlength = (inputValue < 0) ? 12 : 11;
+    if (inputValue === "0") inputValue = "";
+    if (inputValue.length < maxlength) {
+        inputValue += this.dataset.key;
+        updateDisplay(inputValue);
     }
     
 }
@@ -95,6 +103,8 @@ function specialButtonClicked() {
 const display = document.querySelector('.displaytext');
 const negative = document.querySelector('.displaynegative');
 
+const calculateButton = document.querySelector('.key.calculate');
+calculateButton.addEventListener('click', calculateButtonClicked);
 const operateButtons = Array.from(document.querySelectorAll('.key.operate'));
 operateButtons.forEach(key => key.addEventListener('click', operateButtonClicked));
 const numButtons = Array.from(document.querySelectorAll('.key.num'));

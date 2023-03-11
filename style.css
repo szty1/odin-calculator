@@ -75,7 +75,8 @@ button:active:focus, button:focus {
     background-color:rgb(97, 97, 97);
 }
 
-.key.operate {
+.key.operate,
+.key.calculate {
     background-color:rgb(255, 145, 0);
     border-color: rgb(255, 162, 41);
 }

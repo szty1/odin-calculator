@@ -1,6 +1,7 @@
 let inputValue = "0";
 let storedValue;
 let operation;
+let resetInput = false;
 
 function add(a ,b) {
     return Number(a) + Number(b);
@@ -15,7 +16,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    if (b == 0) return "ERROR!";
+    if (b == 0) return;
     return Number(a) / Number(b);
 }
 
@@ -29,6 +30,7 @@ function handleClear() {
     storedValue= undefined;
     operation = undefined;
     updateDisplay(inputValue);
+    operateButtons.forEach(key => key.classList.remove('selected'));
 }
 
 function handleBackspace() {
@@ -57,40 +59,46 @@ function updateDisplay(text) {
 }
 
 function calculate() {
-    storedValue = window[operation](storedValue, inputValue);
-    updateDisplay(storedValue);
-    inputValue = "0";
-    operation = undefined;
-    operateButtons.forEach(key => key.classList.remove('selected'));
+    let result = window[operation](storedValue, inputValue);
+    updateDisplay(result);
+    if (result != undefined) storedValue = result;
+    console.log(storedValue, inputValue);
+    resetInput = true;
 }
 
 function operateButtonClicked() {
+    operation = this.dataset.key;
+    operateButtons.forEach(key => key.classList.remove('selected'));
+    this.classList.add('selected');
+    if (resetInput) return;
+
     if (inputValue && storedValue) {
         calculate();
     } else {
         storedValue = inputValue;
         inputValue = "0";
     }
-    operation = this.dataset.key;
-    operateButtons.forEach(key => key.classList.remove('selected'));
-    this.classList.add('selected');
+    
 }
 
 function calculateButtonClicked() {
     if (inputValue && storedValue) {
         calculate();
-        storedValue = undefined;
     }
 }
 
 function numButtonClicked() {
+    if (resetInput) {
+        inputValue = "0";
+        resetInput = false;
+    }
     let maxlength = (inputValue < 0) ? 12 : 11;
     if (inputValue === "0") inputValue = "";
     if (inputValue.length < maxlength) {
         inputValue += this.dataset.key;
         updateDisplay(inputValue);
     }
-    
+    operateButtons.forEach(key => key.classList.remove('selected'));
 }
 
 function specialButtonClicked() {

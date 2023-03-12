@@ -76,7 +76,6 @@ function updateDisplay(text) {
 function calculate() {
     // check if operation is defined, perform calculation and display result
     if (!operation) return;
-    console.log(storedValue, inputValue)
     let result = window[operation](storedValue, inputValue);
     updateDisplay(result);
 
@@ -172,5 +171,3 @@ const specialButtons = Array.from(document.querySelectorAll('.key.special'));
 specialButtons.forEach(key => key.addEventListener('click', specialButtonClicked));
 
 window.addEventListener('keydown', handleKeyboardInput);
-
-// console.log(window);

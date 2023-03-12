@@ -33,6 +33,7 @@ function handleClear() {
     operation = undefined;
     resetInput = false;
     operateButtons.forEach(key => key.classList.remove('selected'));
+    updateDisplay(inputValue);
 }
 
 function handleBackspace() {
@@ -48,7 +49,7 @@ function handleBackspace() {
 
 function updateDisplay(text) {
     // if number is too large to display or a function returned an error show error msm on display
-    if ((Math.abs(Number(text)) > 99999999999) || !text) {
+    if ((Math.abs(Number(text)) > 99999999999) || text === null) {
         text = "ERROR!";
         handleClear();
     }
@@ -84,11 +85,11 @@ function calculate() {
     resetInput = true;
 }
 
-function operateButtonClicked() {
+function operateButtonClicked(btn) {
     // store operation and display it on the button
-    operation = this.dataset.key;
+    operation = btn.getAttribute('data-key');
     operateButtons.forEach(key => key.classList.remove('selected'));
-    this.classList.add('selected');
+    btn.classList.add('selected');
     
     // if another operate button was press before, don't do anything else
     if (resetInput) return;
@@ -101,19 +102,18 @@ function operateButtonClicked() {
     } else {
         storedValue = inputValue;
         inputValue = "0";
-        updateDisplay(inputValue);
     }
     
 }
 
 function calculateButtonClicked() {
     // if we have a stored and input value, make the calculation
-    if (inputValue && storedValue) {
+    if (inputValue && storedValue != null) {
         calculate();
     }
 }
 
-function numButtonClicked() {
+function numButtonClicked(key) {
     //if a result is displayed, a new numeric input should reset the inputvalue
     if (resetInput) {
         inputValue = "0";
@@ -121,14 +121,14 @@ function numButtonClicked() {
     }
 
     // prevent more than one decimal point in input
-    if (this.dataset.key === "." && inputValue.includes(".")) return;
+    if (key === "." && inputValue.includes(".")) return;
 
     if (inputValue === "0") inputValue = "";
 
     // do not add number if max length is reached
     let maxlength = (inputValue < 0) ? 12 : 11;
     if (inputValue.length < maxlength) {
-        inputValue += this.dataset.key;
+        inputValue += key;
         updateDisplay(inputValue);
     }
 
@@ -136,38 +136,72 @@ function numButtonClicked() {
     operateButtons.forEach(key => key.classList.remove('selected'));
 }
 
-function specialButtonClicked() {
-    // handle special buttons
-    switch (this.dataset.key) {
+function handleInput(e) {
+    let key = (e.key === undefined) ? this.dataset.key : e.key;
+
+    switch(key) {
+        case '0':
+        case '1': 
+        case '2':
+        case '3': 
+        case '4':
+        case '5': 
+        case '6':
+        case '7': 
+        case '8':
+        case '9':
+        case '.': 
+            numButtonClicked(key);
+            break;
+
+        case '+':
+        case 'add':
+            operateButtonClicked(document.querySelector('[data-key="add"]'));
+            break;
+
+        case '-':
+        case 'subtract':
+            operateButtonClicked(document.querySelector('[data-key="subtract"]'));
+            break;
+
+        case '*':
+        case 'multiply':
+            operateButtonClicked(document.querySelector('[data-key="multiply"]'));
+            break;
+
+        case '/':
+        case 'divide':
+            operateButtonClicked(document.querySelector('[data-key="divide"]'));
+            break;
+
+        case 'Enter':
+        case 'calculate':
+            calculateButtonClicked();
+            break;
+
         case 'plusminus':
             toggleNegative();
             break;
+
         case 'clear':
+        case 'Escape':
             handleClear();
-            updateDisplay(inputValue);
             break;
+
         case 'bckspc':
+        case 'Backspace':
             handleBackspace();
             break;
     }
-}
-
-function handleKeyboardInput(e) {
-    console.log(e.key);
 
 }
-
 
 const display = document.querySelector('.displaytext');
 const negative = document.querySelector('.displaynegative');
 
-const calculateButton = document.querySelector('.key.calculate');
-calculateButton.addEventListener('click', calculateButtonClicked);
 const operateButtons = Array.from(document.querySelectorAll('.key.operate'));
-operateButtons.forEach(key => key.addEventListener('click', operateButtonClicked));
-const numButtons = Array.from(document.querySelectorAll('.key.num'));
-numButtons.forEach(key => key.addEventListener('click', numButtonClicked));
-const specialButtons = Array.from(document.querySelectorAll('.key.special'));
-specialButtons.forEach(key => key.addEventListener('click', specialButtonClicked));
 
-window.addEventListener('keydown', handleKeyboardInput);
+const allButtons = Array.from(document.querySelectorAll('.key'));
+allButtons.forEach(key => key.addEventListener('click', handleInput));
+
+window.addEventListener('keydown', handleInput);

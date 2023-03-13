@@ -26,16 +26,16 @@ body {
     justify-content: right;
     background-color:rgb(24, 24, 24);
     border-radius: 16px;
-    padding: 10px 15px 0 15px;
+    padding: 15px 15px 5px 15px;
 }
 
 .displaytext {
-    font-size: 50px;
+    font-size: 40px;
     color: rgba(255, 255, 255, 0.76);
 }
 
 .displaynegative {
-    font-size: 50px;
+    font-size: 40px;
     color: rgba(255, 255, 255, 0.76);
 }
 
